@@ -17,7 +17,7 @@ const App = () => {
   if (setupTime == null) {
     localStorage.setItem('setupTime', now);
   } else {
-    if (now - setupTime > hours * 60 * 60 * 1000) {
+    if (now - setupTime > 5 * 60 * 1000) {
       localStorage.clear();
       localStorage.setItem('setupTime', now);
     }
@@ -43,6 +43,12 @@ const App = () => {
 
   const clearSearchField = () => {
     setSearchTitle("");
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/posts/search", {state: { searchTitle: searchTitle }});
+    clearSearchField();
   }
 
   const logOut = () => {
@@ -72,12 +78,14 @@ const App = () => {
               <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
             )}
           </ul>
-          <form className="form-inline">
+          <form className="form-inline" onSubmit={handleSubmit}>
             <input className="form-control mr-sm-2" type="search"
               name="searchTitle" value={searchTitle} onChange={onChangeTitle}
               placeholder="Search" aria-label="Search" />
-            <Link to="/posts/search" state={{ searchTitle: searchTitle }} onClick={clearSearchField}><button className="btn btn-light" type="button"><i
-              className="fas fa-search"></i></button></Link>
+            {/* <Link to="/posts/search" state={{ searchTitle: searchTitle }} onClick={clearSearchField}> */}
+              <button className="btn btn-light" type="submit"><i
+              className="fas fa-search"></i></button>
+              {/* </Link> */}
           </form>
           <span id="search-text"
             style={{ color: "whitesmoke", visibility: "hidden" }}><strong>Searching...</strong></span><br></br>

@@ -66,9 +66,15 @@ const PostDetailPage = () => {
                 }, 2000);
             })
             .catch(e => {
-                setMessage("Login with Admin Role is required to update Post");
-                setUpdateSuccess(false);
-                console.log(e);
+                if(e.response.status == '401'){
+                    setMessage("Login with Admin Role is required to update Post");
+                    setUpdateSuccess(false);
+                }
+                else{
+                    setMessage("Update failed with Status: ",e.response.status);
+                    setUpdateSuccess(false);
+                    console.log(e.response.body);
+                }
             });
     };
 
@@ -147,9 +153,6 @@ const PostDetailPage = () => {
                             />
                         </div>
                     </form>
-                    {/* <button className="badge badge-danger mr-2" onClick={deletePost}>
-                        Delete
-                    </button> */}
                     {currentIndex > 0 && (
                         <button
                             type="button"
